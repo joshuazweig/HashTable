@@ -4,6 +4,8 @@ CFLAGS = -g -Wall $(INCLUDES)
 
 LDFLAGS = -g
 
+LDLIBS = -lm
+
 hashmap-test: hashmap-test.o hashmap.o
 
 hashmap-test.o: hashmap-test.c hashmap.h
