@@ -85,14 +85,14 @@ void printL(struct HashMap* map)
   for(i = 0; i < map->size; i++) 
   {
     //if((map->element) + i == NULL) //fix increments!
-    if((*((map+i)->element)) == NULL)
+    if((*(map->element + i)) == NULL)
     {
       printf("NULL\n");
       continue;
     }
-    k = (*((map+i)->element))->key; 
-    v = (*((map+i)->element))->value; 
-    e = (*((map+i)->element))->next;
+    k = (*(map->element + i))->key; 
+    v = (*(map->element + i))->value; 
+    e = (*(map->element + i))->next;
     printf("(%s , %s)\n", k, (char*) v);
     if(e->key != NULL)
       printf("->(%s , %s) \n", e->key, (char*) e->value); //you should loop her
