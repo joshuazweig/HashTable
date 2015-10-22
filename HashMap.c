@@ -84,6 +84,12 @@ void printL(struct HashMap* map)
   int i; 
   for(i = 0; i < map->size; i++) 
   {
+    //if((map->element) + i == NULL) //fix increments!
+    if((*((map+i)->element)) == NULL)
+    {
+      printf("NULL\n");
+      continue;
+    }
     k = (*((map+i)->element))->key; 
     v = (*((map+i)->element))->value; 
     e = (*((map+i)->element))->next;
@@ -122,7 +128,6 @@ int set(char* key, void* val, struct HashMap *map)
 
   if(*(map->element + offset) == NULL) //check this
   {
-    printf("%s\n", e->key);
     *(map->element + offset) = e;
     return 1;
   }
