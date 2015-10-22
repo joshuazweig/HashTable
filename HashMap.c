@@ -64,30 +64,49 @@ int isPrime(int n) // assuming n > 1
 
 int nextPrime(int n)
 {
+  if(isPrime(n))
+    return n;
+
   int nextPrime = n + 1;
   while(!isPrime(nextPrime))
   {
     nextPrime++;
-    printf("%u \n", nextPrime);
+  //  printf("%u \n", nextPrime);
   }
   return nextPrime;
 }
 
+void printL(struct HashMap* map)
+{
+  char* k;
+  void* v;
+  struct Element* e;
+  int i; 
+  for(i = 0; i < map->size; i++) 
+  {
+    k = (*(map->element))->key; 
+    v = (*(map->element))->value; 
+    e = (*(map->element))->next;
+    printf("(%s , %s)\n", k, (char*) v);
+    if(e->key != NULL)
+      printf("->(%s , %s) \n", e->key, (char*) e->value); //you should loop here
+    
+    map++;
+  }
+}
 //Returns a pointer to the pointer that points to the element at position 0 in the hashmap
 struct HashMap* constructor(int s)
 {
   struct HashMap *map;
   map = (struct HashMap*)malloc(sizeof(struct HashMap));
-  printf("%x \n", *map);
   if(!map)
     exit(1); //malloc failed
   int size = nextPrime(s);
   map->size = size;
 
-  map->element = (struct Element**)malloc(sizeof(struct Element*) * size);
+  map->element = (struct Element**)malloc((sizeof(struct Element*) * size) + (sizeof(struct Element) * size));
   //Now the element ** should hold an array of null pointers
   //I can malloc each time I can to the hash val
-
   return map;
 }
 
@@ -97,16 +116,19 @@ int set(char* key, void* val, struct HashMap *map)
   int size = map->size;
   int offset = hash(key) % size;
   struct Element *e = (struct Element*)malloc(sizeof(struct Element));
+
   if(!e)
     return 0; //Failure
-
+  
   e->key = key; e->value = val; //Now we have an element, where do we put it?
 
   if(*(map->element + offset) == NULL) //check this
   {
+    printf("%s\n", e->key);
     *(map->element + offset) = e;
     return 1;
   }
+
   //Otherwise lets linear probe! 
   int newoff = offset + 1;
   while(offset != newoff)
