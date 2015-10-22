@@ -84,14 +84,12 @@ void printL(struct HashMap* map)
   int i; 
   for(i = 0; i < map->size; i++) 
   {
-    k = (*(map->element))->key; 
-    v = (*(map->element))->value; 
-    e = (*(map->element))->next;
+    k = (*((map+i)->element))->key; 
+    v = (*((map+i)->element))->value; 
+    e = (*((map+i)->element))->next;
     printf("(%s , %s)\n", k, (char*) v);
     if(e->key != NULL)
-      printf("->(%s , %s) \n", e->key, (char*) e->value); //you should loop here
-    
-    map++;
+      printf("->(%s , %s) \n", e->key, (char*) e->value); //you should loop her
   }
 }
 //Returns a pointer to the pointer that points to the element at position 0 in the hashmap

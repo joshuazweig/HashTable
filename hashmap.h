@@ -21,4 +21,8 @@ void* delete(char *key, struct HashMap *map);
 float load(struct HashMap *map);
 int hash(char *str);
 
+
+//help
+void printL(struct HashMap* map);
+
 #endif
