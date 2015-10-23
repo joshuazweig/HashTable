@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h> //I know you said no libs, but for C these two are somewhat necessary
+#include <string.h> //same for string...
 
 //Since C is not an object oriented, I require a parameter 
 //for the methods in the spec that passes in the pointer to a hashmap for the 
@@ -97,9 +98,11 @@ void printL(struct HashMap* map)
     k = (*(map->element + i))->key; 
     v = (*(map->element + i))->value; 
     e = (*(map->element + i))->next;
-    printf("(%s , %s)\n", k, (char*) v);
+    printf("(%s , %s)", k, (char*) v);
     if(e != NULL)
-      printf("->(%s , %s) \n", e->key, (char*) e->value); //you should loop her
+      printf("->(%s , %s)", e->key, (char*) e->value); //you should loop her
+
+    printf("\n");
   }
 }
 //Returns a pointer to the pointer that points to the element at position 0 in the hashmap
@@ -122,7 +125,7 @@ int set(char* key, void* val, struct HashMap *map)
 {
   //Lets find where it is supposed to go
   int offset = hashCode(key, map);
-  printf("%u\n", offset);
+  //printf("%u\n", offset);
   struct Element *e = (struct Element*)malloc(sizeof(struct Element));
   if(!e)
     return 0; //Failure
@@ -146,10 +149,24 @@ int set(char* key, void* val, struct HashMap *map)
 
 void* get(char *key, struct HashMap *map)
 {
+  int offset = hashCode(key, map);
+
+  if(*(map->element + offset) == NULL)
+    return NULL;
+  if(!strcmp((*(map->element + offset))->key, key))
+    return (*(map->element + offset))->value;
+  
+  int i;
+  for(i = offset + 1; i != offset; i++)
+  {
+    i %= map->size;
+    if(*(map->element + i) == NULL)
+      return NULL;
+    if(!strcmp(key,(*(map->element + i))->key))
+      return (*(map->element + offset))->value;
+  }
+
 }
-
-
-
 
 void* delete(char *key, struct HashMap *map)
 {
