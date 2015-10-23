@@ -24,7 +24,7 @@ int hashCode(char *str, struct HashMap *map);
 
 //help
 void printL(struct HashMap* map);
-int hash(char *str, struct HashMap *map);
+//int hash(char *str, struct HashMap *map);
 
 
 #endif
