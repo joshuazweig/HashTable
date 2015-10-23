@@ -10,9 +10,8 @@
 //Sorry I had to go beyond the parameter list defined by the spec, but I think that
 //this is the best practice for solving the question in C.
 
-//Fixed size means I should open address! 
+//////////////////////////Helper Methods/////////////////////
 
-//Helpers
 //Hashfunction
 //djb2 by Dan Bernstein http://www.cse.yorku.ca/~oz/hash.html
 int hashCode(char *str, struct HashMap *map)
@@ -55,6 +54,7 @@ int isPrime(int n) // assuming n > 1
     return 1;
 }
 
+//Returns first prime greater than or equal to n
 int nextPrime(int n)
 {
   if(isPrime(n))
@@ -69,6 +69,7 @@ int nextPrime(int n)
   return nextPrime;
 }
 
+//Prints contents of list
 void printL(struct HashMap* map)
 {
   char* k;
@@ -88,6 +89,20 @@ void printL(struct HashMap* map)
   }
 }
 
+//I will not free the data pointer because I should not be controlling the lifetime of a data reference
+void hashFree(struct HashMap* map)
+{
+  int i = 0;
+  struct Element* e;
+  for(i = 0; i < map->size; i++)
+  {
+    e = *(map->element + i);
+    free(e);
+  }
+  free(map->element);
+  free(map);
+}
+/////////////////////////////////////////////////////////////
 
 /*
 * The function is used to construct an instance of a HashTable. 
@@ -111,9 +126,12 @@ struct HashMap* constructor(int s)
 }
 
 /*
-*
-*
-*
+* This function will add a key value pair into the HashTable 
+* Params: char* key - the key that will be used to index the data
+*         void* val - a pointer to any data object reference
+          struct *HashMap map - The map for the data to be set into
+* return: 1 on success 0 on failure (since C has no bool)
+          Failure condition is that the table is full
 */
 int set(char* key, void* val, struct HashMap *map)
 {
@@ -144,6 +162,14 @@ int set(char* key, void* val, struct HashMap *map)
   return 1;
 }
 
+/*
+* Returns the data pointer associated with a given key
+* If two elements have the same key the first one in the table will be returned
+* Params: char* key - the key that will be used to index the data
+          struct *HashMap map - The map for the data to be retrieved from
+* Returns: The data object reference, returns null pointer if the key is
+           not mapped to in the table
+*/
 void* get(char *key, struct HashMap *map)
 {
   int offset = hashCode(key, map);
@@ -169,6 +195,16 @@ void* get(char *key, struct HashMap *map)
   return NULL;
 }
 
+/*
+* Marks the Element referenced by key as deleted
+* The element does not actually get deleted in effort to not break the open addressing
+* collision resolution strategy
+* If two elements have the same key the first one in the table will be deleted
+* Params: char* key - the key that will be used to index the data
+          struct *HashMap map - The map for the data to be deleted from
+* Returns: The data object reference of the deleted element, 
+           returns null pointer if the key is not mapped to in the table
+*/
 void* delete(char *key, struct HashMap *map)
 {
   int offset = hashCode(key, map);
@@ -199,7 +235,12 @@ void* delete(char *key, struct HashMap *map)
   return NULL;
 }
 
-
+/*
+* Calculates the load factor of the hashmap by the formula
+* # elmenets / max # elements
+* Params: Pointer to the struct to find the load factor of
+* Returns: float = the load factor of the table
+*/
 float load(struct HashMap *map)
 {
   int i = 0;

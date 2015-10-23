@@ -20,11 +20,8 @@ void* get(char *key, struct HashMap *map);
 void* delete(char *key, struct HashMap *map);
 float load(struct HashMap *map);
 int hashCode(char *str, struct HashMap *map);
-
-
-//help
+void hashFree(struct HashMap* map);
 void printL(struct HashMap* map);
-//int hash(char *str, struct HashMap *map);
 
 
 #endif

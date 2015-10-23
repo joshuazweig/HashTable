@@ -8,10 +8,12 @@ int main(int argc, char **argv)
   set("Another Key", "More data", map);
   set("A Third Key", "Some Data", map);
 
+  printf("The hashmap currently looks like this:\n");
   printL(map);
   printf("\n");
   set("A Key", "Random Data", map); //Test Collision Resolution
 
+  printf("The hashmap currently looks like this:\n");
   printL(map);
   printf("\n");
 
@@ -25,8 +27,26 @@ int main(int argc, char **argv)
   printf("%s\n", s2);
   printf("\n");
 
+  printf("The hashmap currently looks like this:\n");
   printL(map);
 
-  printf("%f\n", load(map));
+  printf("Load Factor Test: %f\n\n\n", load(map));
+
+  printf("Test functions on full hashmap strucutre\n");
+  set("one", "Arb Value", map);
+  set("two", "More data", map);
+  set("three", "Some Data", map);  
+  set("four", "Arb Value", map);
+  set("five", "More data", map);
+  set("six", "Some Data", map);  
+  set("seven", "Arb Value", map);
+  set("eight", "More data", map);
+  set("nine", "Some Data", map);
+
+  printf("The hashmap currently looks like this:\n");
+  printL(map);
+
+  hashFree(map);
+
   return 0;
 }
