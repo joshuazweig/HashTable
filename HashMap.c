@@ -24,13 +24,17 @@
 //Helpers
 //Hashfunction
 //djb2 by Dan Bernstein http://www.cse.yorku.ca/~oz/hash.html
-int hash(char *str)
+int hashCode(char *str, struct HashMap *map)
 {
       int hash = 5381;
       int c;
 
       while ((c = *str++))
           hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+
+      if(hash < 0)
+        hash *= -1;
+      hash %= (map->size);
 
       return hash;
 }
@@ -85,7 +89,7 @@ void printL(struct HashMap* map)
   for(i = 0; i < map->size; i++) 
   {
     //if((map->element) + i == NULL) //fix increments!
-    if((*(map->element + i)) == NULL)
+    if((*(map->element + i))  == NULL)
     {
       printf("NULL\n");
       continue;
@@ -94,7 +98,7 @@ void printL(struct HashMap* map)
     v = (*(map->element + i))->value; 
     e = (*(map->element + i))->next;
     printf("(%s , %s)\n", k, (char*) v);
-    if(e->key != NULL)
+    if(e != NULL)
       printf("->(%s , %s) \n", e->key, (char*) e->value); //you should loop her
   }
 }
@@ -117,10 +121,9 @@ struct HashMap* constructor(int s)
 int set(char* key, void* val, struct HashMap *map)
 {
   //Lets find where it is supposed to go
-  int size = map->size;
-  int offset = hash(key) % size;
+  int offset = hashCode(key, map);
+  printf("%u\n", offset);
   struct Element *e = (struct Element*)malloc(sizeof(struct Element));
-
   if(!e)
     return 0; //Failure
   
@@ -131,23 +134,21 @@ int set(char* key, void* val, struct HashMap *map)
     *(map->element + offset) = e;
     return 1;
   }
-
-  //Otherwise lets linear probe! 
-  int newoff = offset + 1;
-  while(offset != newoff)
+  //Otherwise lets chain! 
+  struct Element *chain =  *(map->element + offset);
+  while(chain->next != NULL)
   {
-     if(*(map->element + newoff) == NULL) //check this
-     {
-        *(map->element + newoff) = e;
-        return 1;
-     }   
+    chain = chain->next;
   }
+  chain->next = e;
   return 0; //i guess we didnt find anything
 }
 
 void* get(char *key, struct HashMap *map)
 {
 }
+
+
 
 
 void* delete(char *key, struct HashMap *map)

@@ -19,10 +19,12 @@ int set(char* key, void* val, struct HashMap *map);
 void* get(char *key, struct HashMap *map);
 void* delete(char *key, struct HashMap *map);
 float load(struct HashMap *map);
-int hash(char *str);
+int hashCode(char *str, struct HashMap *map);
 
 
 //help
 void printL(struct HashMap* map);
+int hash(char *str, struct HashMap *map);
+
 
 #endif

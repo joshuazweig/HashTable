@@ -4,9 +4,9 @@
 int main(int argc, char **argv)
 {
   struct HashMap *map = constructor(10);
-  set("firstKey", "val", map);
-  set("firstKey", "val 2", map);
-  set("SecondKey", "other string", map);
+  set("firstKeys", "val", map);
+  set("SecondgdgfdgKey", "other string", map);
+  set("firstKeys", "val 2", map);
 
   printL(map);
 
