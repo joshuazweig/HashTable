@@ -8,10 +8,10 @@ int main(int argc, char **argv)
   set("SecondgdgfdgKey", "other string", map);
   set("firstKeys", "val 2", map);
 
-//  int s0 = get("firstKeys", map); //if you actuallly want to print the data cast to char * and print
-//  int s1 = get("nope", map);
+  int s0 = get("firstKeys", map); //if you actuallly want to print the data cast to char * and print
+  int s1 = get("nope", map);
 
- // printf("%u   %u\n", s0, s1);
+  printf("%u   %u\n", s0, s1);
 
  // int s2 = delete("firstKeys", map);
  // printf("%u\n", s2);
