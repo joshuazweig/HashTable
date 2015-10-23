@@ -156,15 +156,6 @@ void* get(char *key, struct HashMap *map)
   if(!strcmp((*(map->element + offset))->key, key))
     return (*(map->element + offset))->value;
   
-  /*int i;
-  for(i = offset + 1; i != offset; i++)
-  {
-    i %= map->size;
-    if(*(map->element + i) == NULL)
-      return NULL;
-    if(!strcmp(key,(*(map->element + i))->key))
-      return (*(map->element + offset))->value;
-  }*/
   struct Element *chain =  *(map->element + offset);
   while(chain->next != NULL)
   {
@@ -173,13 +164,37 @@ void* get(char *key, struct HashMap *map)
 
     chain = chain->next;
   }
-
   return NULL;
-
 }
 
 void* delete(char *key, struct HashMap *map)
 {
+  int offset = hashCode(key, map);
+
+  if(*(map->element + offset) == NULL)
+    return NULL;
+  if(!strcmp((*(map->element + offset))->key, key))
+  {
+    void* data = (*(map->element + offset))->value;
+    *(map->element + offset) = NULL;
+    return data;
+  }
+  
+  struct Element *chain =  *(map->element + offset);
+  struct Element *prev;
+  while(chain->next != NULL)
+  {
+    if(!strcmp(chain->key, key))
+    {
+      void* data = chain->value;
+      prev->next = chain->next;
+      free(chain);
+      return data;
+    }
+    prev = chain;
+    chain = chain->next;
+  }
+  return NULL;
 }
 
 
