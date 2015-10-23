@@ -147,10 +147,10 @@ void* get(char *key, struct HashMap *map)
   
   int originalOff = offset;
   offset++;
-  while(*(map->element + offset) != offset && *(map->element + offset) != NULL && strcmp(key,(*(map->element + offset)->key)))
+  while(originalOff != offset && *(map->element + offset) != NULL && strcmp(key,(*(map->element + offset))->key))
     offset++;
-  if(!strcmp(key,(*(map->element + offset)->key)))
-    return (*(map->element + offset)->value;
+  if(!strcmp(key,(*(map->element + offset))->key))
+    return (*(map->element + offset))->value;
   return NULL;
 }
 
