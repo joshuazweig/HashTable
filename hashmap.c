@@ -1,7 +1,7 @@
 #include "hashmap.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h> //I know you said no libs, but for C these two are somewhat necessary
+#include <math.h> //I know you said no libs, but for C these two are somewhat necessary and included in other languages aboce C on the stack
 #include <string.h> //same for string...
 
 //Since C is not an object oriented, I require a parameter 
