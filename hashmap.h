@@ -5,7 +5,7 @@ struct Element
 {
   char* key;
   void* value;
-  struct Element* next;
+  int deleted;
 };
 
 struct HashMap
