@@ -176,7 +176,7 @@ void* delete(char *key, struct HashMap *map)
   if(!strcmp((*(map->element + offset))->key, key))
   {
     void* data = (*(map->element + offset))->value;
-    *(map->element + offset) = NULL;
+    *(map->element + offset) = (*(map->element + offset))->next;
     return data;
   }
   
