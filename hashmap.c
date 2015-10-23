@@ -145,15 +145,17 @@ void* get(char *key, struct HashMap *map)
   
   int originalOff = offset;
   offset++;
-  while(*(map->element + offset) != NULL || strcmp(key,(*(map->element + offset))->key) || ((*(map->element + offset))->deleted != 1))
+  while(*(map->element + offset) != NULL)
    {
+    if(!strcmp(key,(*(map->element + offset))->key) && ((*(map->element + offset))->deleted != 1))
+      return (*(map->element + offset))->value;
+    
     offset++;
-
     if(originalOff == offset)
       return NULL;
   }
-  if(*(map->element + offset) != NULL && ((*(map->element + offset))->deleted != 1) && !strcmp(key,(*(map->element + offset))->key))
-    return (*(map->element + offset))->value;
+  //if(*(map->element + offset) != NULL && ((*(map->element + offset))->deleted != 1) && !strcmp(key,(*(map->element + offset))->key))
+   // return (*(map->element + offset))->value;
   return NULL;
 }
 
@@ -161,25 +163,29 @@ void* delete(char *key, struct HashMap *map)
 {
   int offset = hashCode(key, map);
 
-  if(*(map->element + offset) == NULL)
+ if(*(map->element + offset) == NULL)
     return NULL;
   if(!strcmp((*(map->element + offset))->key, key) && (*(map->element + offset))->deleted != 1)
   {
-    void* data = (*(map->element + offset))->value;
-    (*(map->element + offset))->deleted = 1;
-    return data;
-  }  
-
-  int originalOff = offset;
-  offset++;
-  while(originalOff != offset || *(map->element + offset) != NULL || strcmp(key,(*(map->element + offset))->key) || ((*(map->element + offset))->deleted == 1))
-    offset++;
-
-  if(*(map->element + offset) != NULL && ((*(map->element + offset))->deleted != 1) && !strcmp(key,(*(map->element + offset))->key))
-  {
-    (*(map->element + offset))->deleted = 1;
+    (*(map->element + offset))->deleted = 1; //should i change the key to null?
     return (*(map->element + offset))->value;
   }
+  int originalOff = offset;
+  offset++;
+  while(*(map->element + offset) != NULL)
+   {
+    if(!strcmp(key,(*(map->element + offset))->key) && ((*(map->element + offset))->deleted != 1))
+    {
+      (*(map->element + offset))->deleted = 1; //should i change the key to null?
+      return (*(map->element + offset))->value;
+    }
+    
+    offset++;
+    if(originalOff == offset)
+      return NULL;
+  }
+  //if(*(map->element + offset) != NULL && ((*(map->element + offset))->deleted != 1) && !strcmp(key,(*(map->element + offset))->key))
+   // return (*(map->element + offset))->value;
   return NULL;
 }
 
