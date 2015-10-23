@@ -79,7 +79,7 @@ void printL(struct HashMap* map)
   for(i = 0; i < map->size; i++) 
   {
     //if((map->element) + i == NULL) //fix increments!
-    if((*(map->element + i))  == NULL)
+    if((*(map->element + i)) == NULL || (*(map->element + i))->deleted == 1)
     {
       printf("NULL\n");
       continue;
