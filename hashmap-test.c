@@ -13,9 +13,9 @@ int main(int argc, char **argv)
 
   printf("%s   %s\n", s0, s1);
 
- // int s2 = delete("firstKeys", map);
- // printf("%u\n", s2);
-  printL(map);
+ // char* s2 = (char*) delete("firstKeys", map);
+ // printf("%s\n", s2);
+ // printL(map);
 
   return 0;
 }

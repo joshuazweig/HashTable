@@ -75,7 +75,6 @@ void printL(struct HashMap* map)
 {
   char* k;
   void* v;
-  struct Element* e;
   int i; 
   for(i = 0; i < map->size; i++) 
   {
@@ -87,7 +86,6 @@ void printL(struct HashMap* map)
     }
     k = (*(map->element + i))->key; 
     v = (*(map->element + i))->value; 
-    e = (*(map->element + i))->next;
     printf("(%s , %s) \n", k, (char*) v);
   }
 }
@@ -126,7 +124,7 @@ int set(char* key, void* val, struct HashMap *map)
   //Otherwise lets open address! 
   int originalOff = offset;
   offset++;
-  while(*(map->element + offset) != NULL || ((*(map->element + offset))->deleted != 1))
+  while(*(map->element + offset) != NULL && ((*(map->element + offset))->deleted != 1))
   {
     if(originalOff == offset) //its full
       return 0;
@@ -147,8 +145,13 @@ void* get(char *key, struct HashMap *map)
   
   int originalOff = offset;
   offset++;
-  while(originalOff != offset || *(map->element + offset) != NULL || strcmp(key,(*(map->element + offset))->key) || ((*(map->element + offset))->deleted != 1))
+  while(*(map->element + offset) != NULL || strcmp(key,(*(map->element + offset))->key) || ((*(map->element + offset))->deleted != 1))
+   {
     offset++;
+
+    if(originalOff == offset)
+      return NULL;
+  }
   if(*(map->element + offset) != NULL && ((*(map->element + offset))->deleted != 1) && !strcmp(key,(*(map->element + offset))->key))
     return (*(map->element + offset))->value;
   return NULL;
@@ -163,7 +166,7 @@ void* delete(char *key, struct HashMap *map)
   if(!strcmp((*(map->element + offset))->key, key) && (*(map->element + offset))->deleted != 1)
   {
     void* data = (*(map->element + offset))->value;
-    *(map->element + offset)->deleted = 1;
+    (*(map->element + offset))->deleted = 1;
     return data;
   }  
 
@@ -172,7 +175,7 @@ void* delete(char *key, struct HashMap *map)
   while(originalOff != offset || *(map->element + offset) != NULL || strcmp(key,(*(map->element + offset))->key) || ((*(map->element + offset))->deleted == 1))
     offset++;
 
-  if(*(map->element + offset) != NULL && ((*(map->element + offset))->deleted != 1 && !strcmp(key,(*(map->element + offset))->key))
+  if(*(map->element + offset) != NULL && ((*(map->element + offset))->deleted != 1) && !strcmp(key,(*(map->element + offset))->key))
   {
     (*(map->element + offset))->deleted = 1;
     return (*(map->element + offset))->value;
@@ -187,7 +190,7 @@ float load(struct HashMap *map)
   int numFilled = 0;
   for(i = 0; i < map->size; i++)
   {
-    if(*(map->element + i) != NULL && (*(map->element + i)->deleted != 1)
+    if(*(map->element + i) != NULL && (*(map->element + i))->deleted != 1)
       numFilled++;
   }
 
