@@ -8,7 +8,12 @@ int main(int argc, char **argv)
   set("SecondgdgfdgKey", "other string", map);
   set("firstKeys", "val 2", map);
 
-  printL(map);
+  int s0 = get("firstKeys");
+  int s1 = get("nope");
+
+  printf("%u   %u\n", s0, s1);
+
+  //printL(map);
 
   return 0;
 }

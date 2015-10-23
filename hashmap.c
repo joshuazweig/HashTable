@@ -156,7 +156,7 @@ void* get(char *key, struct HashMap *map)
   if(!strcmp((*(map->element + offset))->key, key))
     return (*(map->element + offset))->value;
   
-  int i;
+  /*int i;
   for(i = offset + 1; i != offset; i++)
   {
     i %= map->size;
@@ -164,7 +164,17 @@ void* get(char *key, struct HashMap *map)
       return NULL;
     if(!strcmp(key,(*(map->element + i))->key))
       return (*(map->element + offset))->value;
+  }*/
+  struct Element *chain =  *(map->element + offset);
+  while(chain->next != NULL)
+  {
+    if(!strcmp(chain->key, key))
+      return chain->value;
+
+    chain = chain->next;
   }
+
+  return NULL;
 
 }
 
