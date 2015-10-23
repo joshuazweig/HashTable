@@ -30,8 +30,6 @@ int hashCode(char *str, struct HashMap *map)
       return hash;
 }
 
-
-
 //I grabbed this function from Stack overflow
 int isPrime(int n) // assuming n > 1
 {
@@ -89,7 +87,14 @@ void printL(struct HashMap* map)
     printf("(%s , %s) \n", k, (char*) v);
   }
 }
-//Returns a pointer to the pointer that points to the element at position 0 in the hashmap
+
+
+/*
+* The function is used to construct an instance of a HashTable. 
+* Param: integer that is the size of the hash table (max elements that can be held)
+* Returns: A pointer to the HashMap struct. 
+* This function will terminate the calling program if not enough memory can be allocated for the struct
+*/
 struct HashMap* constructor(int s)
 {
   struct HashMap *map;
@@ -105,6 +110,11 @@ struct HashMap* constructor(int s)
   return map;
 }
 
+/*
+*
+*
+*
+*/
 int set(char* key, void* val, struct HashMap *map)
 {
   //Lets find where it is supposed to go
