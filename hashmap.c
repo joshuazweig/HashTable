@@ -10,17 +10,7 @@
 //Sorry I had to go beyond the parameter list defined by the spec, but I think that
 //this is the best practice for solving the question in C.
 
-
-//Why I'm implementing a collision resolution strategy of chaining.
-//I thought seriously about doing open addressing, but then on delete it would 
-//push me towards doing lazy deletion which I do not want to do as it would redicue the number
-//of elements that I could hold efficently.
-//I opt for the increased space and perhaps O(n) access time to avoid this problem and make
-//sure that I can always hold at least the minimum number of elements. 
-//A better yet solution would be to do double hashing with chaining.
-
-
-
+//Fixed size means I should open address! 
 
 //Helpers
 //Hashfunction
@@ -98,11 +88,7 @@ void printL(struct HashMap* map)
     k = (*(map->element + i))->key; 
     v = (*(map->element + i))->value; 
     e = (*(map->element + i))->next;
-    printf("(%s , %s)", k, (char*) v);
-    if(e != NULL)
-      printf("->(%s , %s)", e->key, (char*) e->value); //you should loop her
-
-    printf("\n");
+    printf("(%s , %s) \n", k, (char*) v);
   }
 }
 //Returns a pointer to the pointer that points to the element at position 0 in the hashmap
@@ -137,14 +123,17 @@ int set(char* key, void* val, struct HashMap *map)
     *(map->element + offset) = e;
     return 1;
   }
-  //Otherwise lets chain! 
-  struct Element *chain =  *(map->element + offset);
-  while(chain->next != NULL)
+  //Otherwise lets open address! 
+  int originalOff = offset;
+  offset++;
+  while(*(map->element + offset) != NULL)
   {
-    chain = chain->next;
+    if(originalOff == offset) //its full
+      return 0;
+    offset++;
   }
-  chain->next = e;
-  return 0; //i guess we didnt find anything
+  *(map->element + offset) = e;
+  return 1;
 }
 
 void* get(char *key, struct HashMap *map)
