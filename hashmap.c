@@ -177,6 +177,7 @@ void* delete(char *key, struct HashMap *map)
   {
     void* data = (*(map->element + offset))->value;
     *(map->element + offset) = (*(map->element + offset))->next;
+    free(*(map->element + offset));
     return data;
   }
   
